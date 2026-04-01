@@ -11,16 +11,12 @@ def analisar_logs(lista_logs):
     contagem = {}
     
     for linha in lista_logs:
-       
-        partes = linha.split()
-        
+        partes = linha.split() 
         nivel = partes[2]
-     
         if nivel in contagem:
             contagem[nivel] += 1
         else:
-            contagem[nivel] = 1
-            
+            contagem[nivel] = 1       
     return contagem
 
 resultado = analisar_logs(logs)

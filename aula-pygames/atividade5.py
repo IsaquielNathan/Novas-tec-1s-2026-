@@ -33,15 +33,37 @@ class Jogador(EntidadeBase):
         if teclas[pygame.K_DOWN] and self.rect.y < 550: self.rect.y += self.velocidade
 
 class Bala(EntidadeBase):
-    def __init__(self, x, y):
-        super().__init__(x, y, 10, 20, (255, 255, 0))
+    def __init__(self, x, y, alvo_x, alvo_y):
+        # Dimensões 10x10 para um projétil mais simétrico
+        super().__init__(x, y, 10, 10, (255, 255, 0)) 
         self.velocidade = 12
+        
+        # Float para manter a precisão do movimento diagonal
+        self.pos_x = float(x)
+        self.pos_y = float(y)
+
+        dx = alvo_x - x
+        dy = alvo_y - y
+        distancia = (dx**2 + dy**2) ** 0.5
+
+        if distancia == 0:
+            distancia = 1 
+        self.vel_x = (dx / distancia) * self.velocidade
+        self.vel_y = (dy / distancia) * self.velocidade
 
     def voar(self):
-        self.rect.y -= self.velocidade
+        # Atualiza a posição exata (float)
+        self.pos_x += self.vel_x
+        self.pos_y += self.vel_y
+        
+        # Atualiza o rect do pygame (que arredonda para int automaticamente)
+        self.rect.x = int(self.pos_x)
+        self.rect.y = int(self.pos_y)
 
     def fora_da_tela(self):
-        return self.rect.bottom < 0
+        # A bala é destruída ao sair por qualquer um dos 4 cantos da tela
+        return (self.rect.bottom < 0 or self.rect.top > 600 or 
+                self.rect.right < 0 or self.rect.left > 800)
     
 class Inimigo(EntidadeBase):
     def __init__(self, x, y, velocidade=3):
@@ -121,9 +143,12 @@ while estado["rodando"]:
             pygame.quit()
             sys.exit()
             
-        if ev.type == pygame.KEYDOWN:
-            if ev.key == pygame.K_SPACE:
-                nova_bala = Bala(jogador.rect.centerx - 5, jogador.rect.top)
+        if ev.type == pygame.MOUSEBUTTONDOWN:
+            if ev.button == 1: # Botão esquerdo do mouse
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                
+                # Cria uma bala saindo do jogador e indo para a direção do mouse
+                nova_bala = Bala(jogador.rect.centerx, jogador.rect.centery, mouse_x, mouse_y)
                 balas.append(nova_bala)
 
     # Lógica do Nível

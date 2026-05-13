@@ -3,42 +3,42 @@ import pandas as pd
 url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv" 
 
 #Tarefa 1
-filtro = pd.read_csv(url) 
+df = pd.read_csv(url) 
 
-df = filtro.head()
+df = df.head()
 print (df)
 
-info = filtro.info()
+info = df.info()
 
-dimensao = filtro.shape
+dimensao = df.shape
 print (dimensao)
 
 #Tarefa 2
-estatistica = filtro.describe()
+estatistica = df.describe()
 print (estatistica)
 
-classe = filtro['Pclass'].nunique()
+classe = df['Pclass'].nunique()
 print (classe)
 
-genero = filtro['Sex'].value_counts()
+genero = df['Sex'].value_counts()
 print (genero)
 
 #Tarefa 3
-idade_nome = filtro.loc[0:10, ['Name', 'Age']]
+idade_nome = df.loc[0:10, ['Name', 'Age']]
 print (idade_nome)
 
-dados = filtro.iloc[14:15]
+dados = df.iloc[14:15]
 print (dados)
 
 #Tarefa 4 
-velhos = filtro[filtro['Age']>60]
+velhos = df[df['Age']>60]
 print (velhos)
 
-ricas = filtro[(filtro['Sex']=='female') & (filtro['Pclass']==1)]
+ricas = df[(df['Sex']=='female') & (df['Pclass']==1)]
 print (ricas)
 
-tarifa = filtro[(filtro["Fare"].between(50, 100))]
+tarifa = df[(df["Fare"].between(50, 100))]
 print (tarifa)
 
-porto = filtro.query("Embarked == 'C' and Survived == 1")
+porto = df.query("Embarked == 'C' and Survived == 1")
 print (porto)

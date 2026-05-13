@@ -1,4 +1,5 @@
 import pandas as pd
+<<<<<<< HEAD
 
 df = pd.read_csv(
     'vendas.csv', 
@@ -19,3 +20,7 @@ print (df_eletronico.head())
 
 df_media = df.groupby('cidade')['total_venda'].mean().sort_values(ascending=False)
 print(df_media)
+=======
+import numpy as np
+
+>>>>>>> f883e5751b2ad0e2c7bd54737a73604b4c9b66c8
